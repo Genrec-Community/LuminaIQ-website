@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
+import { breadcrumbs, ld, pageMeta } from '@/lib/seo';
 import { Faq } from '@/components/Faq';
 import { Pricing } from '@/components/Pricing';
 import { comparison, faqs, plans } from '@/data/site';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'Pricing: Free, Pro $9 a month, Team $29 a month',
   description:
     'Start free with 3 documents and unlimited chat and quizzes. Pro is $9 a month for unlimited documents and spaced repetition. Team is $29 a month for up to 10 members.',
-};
+  path: '/pricing/',
+});
 
 const faqLd = {
   '@context': 'https://schema.org',
@@ -84,6 +86,7 @@ export default function PricingPage() {
         </div>
       </section>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd).replace(/</g, '\\u003c') }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(breadcrumbs('Pricing', '/pricing/'))} />
     </>
   );
 }

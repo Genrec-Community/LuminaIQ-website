@@ -11,9 +11,16 @@
 // - The YouTube video is presented as the product walkthrough.
 // - Example study content (photosynthesis) is invented to demonstrate the tools.
 
+// Where this marketing site is served. Canonical URLs, the sitemap and the share image all use it.
+// Set NEXT_PUBLIC_SITE_URL when the site moves to its own domain (for example https://luminaiq.fun).
+const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'https://luminaiq-website.vercel.app')
+).replace(/\/$/, '');
+
 export const site = {
   name: 'LuminaIQ',
-  url: 'https://www.luminaiq.fun',
+  url: siteUrl,
   tagline: 'The AI study companion that remembers when you will forget',
   description:
     'LuminaIQ turns your PDFs, textbooks and lecture notes into cited answers, quizzes, notes, flashcards and a spaced repetition schedule. Start free.',

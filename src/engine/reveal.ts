@@ -54,12 +54,15 @@ function blockTween(el: HTMLElement, paused: boolean) {
     kind === 'fade' ? { autoAlpha: 0 }
     : kind === 'clip' ? { clipPath: 'inset(100% 0% 0% 0%)', autoAlpha: 1 }
     : kind === 'scale' ? { scale: 1.15, clipPath: 'inset(12% 12% 12% 12%)', autoAlpha: 1 }
+    // settle: a sheet of paper set down on the desk (LuminaIQ's motion verb)
+    : kind === 'settle' ? { y: 70, rotate: parseFloat(el.dataset.tilt || '2.5'), autoAlpha: 0, transformOrigin: '50% 100%' }
     : { y: 48, autoAlpha: 0 };
   const to: gsap.TweenVars = kind === 'clip' || kind === 'scale' ? { clipPath: 'inset(0% 0% 0% 0%)', scale: 1 } : {};
   gsap.set(el, { visibility: 'visible' });
   return gsap.fromTo(el, from, {
     ...to,
     y: 0,
+    rotate: 0,
     autoAlpha: 1,
     duration: kind === 'fade' ? 1 : 1.3,
     ease: ease.out,

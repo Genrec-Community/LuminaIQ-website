@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
+import { breadcrumbs, ld, pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 import { Arrow } from '@/components/Footer';
 import { Photo } from '@/components/Photo';
 import { photos, site } from '@/data/site';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'About: why LuminaIQ exists',
   description:
     'LuminaIQ is built by GenrecAI on one idea: students should spend their time practising and revising, not preparing notes and cards by hand.',
-};
+  path: '/about/',
+});
 
 const principles = [
   {
@@ -123,6 +125,7 @@ export default function About() {
           </div>
         </div>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(breadcrumbs('About', '/about/'))} />
     </>
   );
 }

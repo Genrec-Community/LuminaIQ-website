@@ -102,6 +102,22 @@ export function MemoryCurve() {
     plot.addEventListener('pointerdown', onDown);
     slider.addEventListener('keydown', onKey);
 
+    // Scroll is time: scrolling the hero away moves the marker through the weeks.
+    let scrollSt: ScrollTrigger | null = null;
+    if (!prefersReducedMotion()) {
+      scrollSt = ScrollTrigger.create({
+        trigger: el,
+        start: 'top 85%',
+        end: 'bottom top',
+        onUpdate: (s) => {
+          if (Math.abs(s.getVelocity()) < 5) return;
+          state.day = 2 + s.progress * (DAYS - 4);
+          state.manualUntil = performance.now() + 1200;
+          render();
+        },
+      });
+    }
+
     // Idle: the marker walks the curve, one pass every ~16 s, only while on screen.
     let tick: (() => void) | null = null;
     let st: ScrollTrigger | null = null;
@@ -124,6 +140,7 @@ export function MemoryCurve() {
       slider.removeEventListener('keydown', onKey);
       if (tick) gsap.ticker.remove(tick);
       st?.kill();
+      scrollSt?.kill();
     };
   });
 

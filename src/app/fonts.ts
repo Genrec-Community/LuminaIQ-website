@@ -6,7 +6,6 @@ import { Atkinson_Hyperlegible_Next, Newsreader } from 'next/font/google';
 export const display = Newsreader({
   subsets: ['latin'],
   style: ['normal', 'italic'],
-  axes: ['opsz'],
   variable: '--font-display',
   display: 'swap',
 });

@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
+import { breadcrumbs, ld, pageMeta } from '@/lib/seo';
 import { FlashcardDemo, NotesDemo, QuizDemo } from '@/components/Demos';
 import { Arrow } from '@/components/Footer';
 import { Specimen } from '@/components/Specimen';
 import { site, tools } from '@/data/site';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'Study tools: chat, quizzes, notes and flashcards',
   description:
     'Eight study tools from one upload: chat with citations, a quiz generator, four kinds of notes, flashcards, mind maps, learning paths, SM-2 spaced repetition and streaks.',
-};
+  path: '/features/',
+});
 
 const demos: Record<string, React.ReactNode> = {
   quizzes: <QuizDemo />,
@@ -70,7 +72,7 @@ export default function Features() {
                 ))}
               </ul>
             </div>
-            <div className="feature__demo" data-reveal="up" data-delay="0.1">
+            <div className="feature__demo" data-reveal="settle" data-tilt={i % 2 ? '-2' : '2'} data-delay="0.1">
               <p className="feature__example">{demos[t.slug] ? 'Try it: example chapter' : 'Example output'}</p>
               {demos[t.slug] ?? <Specimen slug={t.slug} />}
             </div>
@@ -94,6 +96,7 @@ export default function Features() {
           </div>
         </div>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(breadcrumbs('Features', '/features/'))} />
     </>
   );
 }

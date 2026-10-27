@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
+import { breadcrumbs, ld, pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 import { Faq } from '@/components/Faq';
 import { Arrow } from '@/components/Footer';
 import { faqs, loop, pipeline, reviewDays, site } from '@/data/site';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: 'How it works: from your PDF to cited answers',
   description:
     'What happens after you upload: text extraction and OCR, chunking and embeddings, vector search, cited generation, then the SM-2 spaced repetition schedule.',
-};
+  path: '/how-it-works/',
+});
 
 const howFaqs = faqs.filter((f) => ['What can I upload?', 'Does LuminaIQ make things up?', 'What is spaced repetition, exactly?'].includes(f.q));
 
@@ -35,7 +37,7 @@ export default function HowItWorks() {
           <h2 id="pipe-title" className="pipe__title">The pipeline</h2>
           <div className="pipe__track">
             <svg className="pipe__line" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true">
-              <path data-draw data-duration="1.8" pathLength={1} d="M0 20 C 120 4 180 36 250 20 S 380 4 500 20 S 620 36 750 20 S 880 4 1000 20" />
+              <path pathLength={1} d="M0 20 C 120 4 180 36 250 20 S 380 4 500 20 S 620 36 750 20 S 880 4 1000 20" />
             </svg>
             <ol className="pipe__steps">
               {pipeline.map((p, i) => (
@@ -129,6 +131,7 @@ export default function HowItWorks() {
           </div>
         </div>
       </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={ld(breadcrumbs('How it works', '/how-it-works/'))} />
     </>
   );
 }

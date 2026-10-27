@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMeta } from '@/lib/seo';
 import Link from 'next/link';
 import { Arrow } from '@/components/Footer';
 import { MemoryCurve } from '@/components/MemoryCurve';
@@ -9,11 +10,13 @@ import { Node, Thread } from '@/components/Thread';
 import { Video } from '@/components/Video';
 import { audiences, loop, photos, site, stats, tools } from '@/data/site';
 
-export const metadata: Metadata = {
-  title: { absolute: 'LuminaIQ: AI study companion for quizzes, notes and flashcards' },
+export const metadata: Metadata = pageMeta({
+  title: 'LuminaIQ: AI study companion for quizzes, notes and flashcards',
   description:
     'Upload a textbook or lecture PDF and get cited answers, quizzes, four kinds of notes, flashcards and SM-2 spaced repetition. LuminaIQ is free to start.',
-};
+  path: '/',
+  absolute: true,
+});
 
 const toolName = Object.fromEntries(tools.map((t) => [t.slug, t.name]));
 const stageIndex = { Understand: 0, Practise: 1, Measure: 2, Revise: 3 } as const;
@@ -71,7 +74,7 @@ export default function Home() {
                 <Photo photo={photos.hero} eager ratio="4 / 5" sizes="(min-width: 1024px) 34vw, 100vw" />
               </div>
               <div className="floater floater--a" data-float="0.8">
-                <div className="floater__in" data-reveal="up" data-intro data-delay="0.9">
+                <div className="floater__in" data-reveal="settle" data-tilt="-4" data-intro data-delay="0.9">
                 <p className="floater__k">Photosynthesis · 24 cards</p>
                 <p className="floater__v">Next review in 6 days</p>
                 <span className="floater__dots" aria-hidden="true">
@@ -84,7 +87,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="floater floater--b" data-float="1.2">
-                <div className="floater__in" data-reveal="up" data-intro data-delay="1.05">
+                <div className="floater__in" data-reveal="settle" data-tilt="3" data-intro data-delay="1.05">
                 <p className="floater__k">Quiz · Light reactions</p>
                 <p className="floater__v">
                   <b>8</b>/10 correct
@@ -95,7 +98,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="floater floater--c" data-float="1">
-                <div className="floater__in" data-reveal="up" data-intro data-delay="1.2">
+                <div className="floater__in" data-reveal="settle" data-tilt="-2" data-intro data-delay="1.2">
                 <p className="floater__k">Answer from your file</p>
                 <p className="floater__v">Biology, ch. 8, p. 142</p>
                 </div>

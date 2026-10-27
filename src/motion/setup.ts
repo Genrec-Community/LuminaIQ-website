@@ -236,6 +236,92 @@ function loopStage() {
   });
 }
 
+
+/** Reading with a highlighter: as each tool row crosses the middle of the screen, the lime band marks it. */
+function readingMark() {
+  onPage(() => {
+    if (prefersReducedMotion()) return;
+    document.querySelectorAll<HTMLElement>('[data-index] > li').forEach((row) =>
+      ScrollTrigger.create({ trigger: row, start: 'top 58%', end: 'bottom 42%', toggleClass: 'is-reading' }),
+    );
+  });
+}
+
+/** Italic words in headings on paper get a highlighter stroke the moment they arrive. */
+function headingMarks() {
+  onPage(() => {
+    const heads = [...document.querySelectorAll<HTMLElement>('main h2.display, main h1.display')].filter(
+      (h) => h.querySelector('em') && !h.closest('.watch, .sched') && !h.classList.contains('hero__title'),
+    );
+    heads.forEach((h) => {
+      h.classList.add('has-mark');
+      if (prefersReducedMotion()) return h.classList.add('is-marked');
+      ScrollTrigger.create({ trigger: h, start: 'top 75%', once: true, onEnter: () => h.classList.add('is-marked') });
+    });
+  });
+}
+
+/** The video field widens from a card to full bleed as it arrives; the screen grows toward you. */
+function watchField() {
+  onPage(() => {
+    const field = document.querySelector<HTMLElement>('.watch');
+    if (!field || prefersReducedMotion()) return;
+    const frame = field.querySelector<HTMLElement>('.watch__frame');
+    const tl = gsap.timeline({ scrollTrigger: { trigger: field, start: 'top bottom', end: 'top 15%', scrub: 0.6 } });
+    tl.fromTo(field, { clipPath: 'inset(0% 6% 0% 6% round 48px)' }, { clipPath: 'inset(0% 0% 0% 0% round 32px)', ease: 'none' }, 0);
+    if (frame) tl.fromTo(frame, { scale: 0.86, rotate: -1.5 }, { scale: 1, rotate: 0, ease: 'none' }, 0);
+  });
+}
+
+/** Photos on the gallery wall pull focus: they ease from a close crop to the full frame as you pass. */
+function wallFocus() {
+  onPage(() => {
+    if (prefersReducedMotion()) return;
+    document.querySelectorAll<HTMLElement>('.wall__media > div').forEach((inner) =>
+      gsap.fromTo(inner, { scale: 1.25 }, {
+        scale: 1.04,
+        ease: 'none',
+        scrollTrigger: { trigger: inner.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+      }),
+    );
+  });
+}
+
+/** The pipeline line draws with the scroll, and each step lights up as the line reaches it. */
+function pipeline() {
+  onPage(() => {
+    const track = document.querySelector<HTMLElement>('.pipe__track');
+    if (!track) return;
+    const steps = [...track.querySelectorAll<HTMLElement>('.step')];
+    const path = track.querySelector<SVGPathElement>('.pipe__line path');
+    if (prefersReducedMotion()) return steps.forEach((s) => s.classList.add('is-lit'));
+    ScrollTrigger.create({
+      trigger: track,
+      start: 'top 75%',
+      end: 'bottom 45%',
+      scrub: 0.5,
+      onUpdate: (st) => {
+        if (path) path.style.strokeDashoffset = String(1 - st.progress);
+        steps.forEach((s, i) => s.classList.toggle('is-lit', st.progress >= i / steps.length + 0.02 || st.progress > 0.98));
+      },
+    });
+  });
+}
+
+/** [data-draw-scrub] strokes are tied to the scroll instead of playing once. */
+function scrubStrokes() {
+  onPage(() => {
+    if (prefersReducedMotion()) return;
+    document.querySelectorAll<SVGPathElement>('[data-draw-scrub]').forEach((path) =>
+      gsap.fromTo(path, { strokeDashoffset: 1 }, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: path.closest('svg') || path, start: 'top 95%', end: 'top 45%', scrub: 0.6 },
+      }),
+    );
+  });
+}
+
 export function setupMotion() {
   startIdle();
   transition();
@@ -246,4 +332,10 @@ export function setupMotion() {
   toolIndex();
   counters();
   loopStage();
+  readingMark();
+  headingMarks();
+  watchField();
+  wallFocus();
+  pipeline();
+  scrubStrokes();
 }

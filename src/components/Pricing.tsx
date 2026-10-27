@@ -23,7 +23,7 @@ export function Pricing({ headingLevel = 'h3' }: { headingLevel?: 'h2' | 'h3' })
         {plans.map((p, i) => {
           const price = annual ? p.annualPerMonth : p.monthly;
           return (
-            <li key={p.id} className={`plan ${p.popular ? 'plan--popular' : ''}`} data-reveal="up" data-delay={String(i * 0.08)}>
+            <li key={p.id} className={`plan ${p.popular ? 'plan--popular' : ''}`} data-reveal="settle" data-tilt={String([-2.5, 0, 2.5][i] ?? 0)} data-delay={String(i * 0.1)}>
               {p.popular && <p className="plan__badge">Most popular</p>}
               <div className="plan__top">
                 <H className="plan__name">{p.name}</H>

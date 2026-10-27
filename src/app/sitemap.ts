@@ -11,5 +11,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/pricing/', priority: 0.9 },
     { path: '/about/', priority: 0.6 },
   ];
-  return pages.map((p) => ({ url: `${site.url}${p.path}`, changeFrequency: 'monthly', priority: p.priority }));
+  return pages.map((p) => ({ url: `${site.url}${p.path}`, lastModified: new Date(), changeFrequency: 'monthly', priority: p.priority }));
 }

@@ -11,9 +11,9 @@ export function Footer() {
           <p className="finale__title display" data-split="lines">
             Read it today. <em>Still know it</em> in June.
           </p>
-          <svg className="finale__curve" viewBox="0 0 600 120" aria-hidden="true" preserveAspectRatio="none">
+          <svg className="finale__curve" viewBox="0 0 600 100" aria-hidden="true">
             <path
-              data-draw
+              data-draw-scrub
               pathLength={1}
               d="M2 20 C 40 70 70 88 110 92 L 110 20 C 170 60 210 74 250 76 L 250 20 C 330 46 380 54 420 55 L 420 20 C 500 32 550 36 598 37"
             />
