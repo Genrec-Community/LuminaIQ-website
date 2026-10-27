@@ -70,12 +70,15 @@ function header() {
   onScroll(({ y }) => {
     const h = document.documentElement.classList;
     h.toggle('is-scrolled', y > 8);
+    // Phones: a Start free bar rises after the hero and steps aside for the footer's own CTA.
+    const max = document.documentElement.scrollHeight - innerHeight;
+    h.toggle('dock-on', y > innerHeight * 0.75 && y < max - innerHeight * 1.1);
     if (Math.abs(y - last) < 4) return;
     h.toggle('frame-away', y > 240 && y > last && !h.contains('menu-open'));
     last = y;
   });
   onPage(() => {
-    document.documentElement.classList.remove('frame-away');
+    document.documentElement.classList.remove('frame-away', 'dock-on');
   });
 }
 

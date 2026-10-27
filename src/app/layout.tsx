@@ -81,6 +81,14 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           {children}
         </main>
         <Footer />
+        <div className="dock">
+          <a href={site.appUrl} className="btn btn--dark dock__main">
+            <span>Start free</span>
+          </a>
+          <a href="/pricing/" className="btn btn--light dock__alt">
+            <span>Pricing</span>
+          </a>
+        </div>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
         <Motion />
       </body>

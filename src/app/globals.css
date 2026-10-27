@@ -121,6 +121,37 @@ p { max-width: 62ch; }
 }
 .arrow { width: 1em; height: 1em; flex: none; transition: translate 0.35s var(--ease-soft); }
 .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+@media (max-width: 599px) {
+  .hero .actions, .band .actions, .lost .actions, .about-pair .actions { display: grid; grid-template-columns: 1fr; width: 100%; }
+  .hero .actions .btn, .band .actions .btn, .lost .actions .btn, .about-pair .actions .btn { width: 100%; min-height: 3.4rem; }
+  .feature__demo { padding: 0.75rem; border-radius: var(--radius); }
+  .feature__example { padding: 0.25rem 0.25rem 0; }
+  .demo { padding: 1rem; }
+  .index__name { font-size: clamp(1.6rem, 7.4vw, 2rem); }
+  .index__row { padding-block: 1.1rem; }
+  .curve { padding: 1rem; }
+  .curve__title { font-size: 1.2rem; }
+  .curve__note { display: none; }
+  .hero__chart { margin-inline: calc(var(--gutter) * -0.5); }
+  .finale__title { font-size: clamp(2.6rem, 12vw, 3.4rem); }
+  .finale nav:nth-of-type(1), .finale nav:nth-of-type(2), .finale nav:nth-of-type(3) { grid-column: span 4; }
+  .finale ul a { font-size: var(--t-xs); }
+}
+
+/* Phone dock: Start free stays one thumb away once the hero is gone. */
+.dock { display: none; }
+@media (max-width: 767px) {
+  .dock {
+    position: fixed; z-index: 40; left: 0.75rem; right: 0.75rem; bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; padding: 0.4rem;
+    border-radius: 999px; background: color-mix(in srgb, var(--c-card) 92%, transparent);
+    box-shadow: 0 18px 40px -16px rgb(22 54 40 / 0.45), inset 0 0 0 1px var(--c-line);
+    translate: 0 calc(100% + 1.5rem); visibility: hidden; transition: translate 0.6s var(--ease-out), visibility 0s 0.6s;
+  }
+  html.dock-on:not(.menu-open) .dock { translate: 0 0; visibility: visible; transition: translate 0.6s var(--ease-out), visibility 0s; }
+  .dock .btn { min-height: 3rem; }
+  html.dock-on .finale { padding-bottom: 6rem; }
+}
 
 /* Nav links: a lime band draws under the label; the current page keeps it. */
 .mark {
@@ -407,7 +438,11 @@ html:not(.motion) .chapter { opacity: 1; }
 .chapter__tools { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 @media (max-width: 1023px) {
   .loop__intro { grid-column: 1 / -1; }
-  .loop__stage { display: none; }
+  .loop__stage { display: block; grid-column: 1 / -1; grid-row: 2; width: 100%; aspect-ratio: auto; top: calc(var(--header-h) + 0.5rem); z-index: 3; margin-bottom: -1rem; }
+  .loop__stage::before, .loop__stage .dial, .loop__stage .dial__center { display: none; }
+  .loop__stage > .dial__labels { position: static; inset: auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.25rem; padding: 0.3rem; border-radius: 999px; background: var(--c-card); box-shadow: var(--shadow); font-size: var(--t-xs); }
+  .loop__stage .dial__labels li { position: static; text-align: center; padding: 0.55rem 0.2rem; background: transparent; transition: background-color 0.4s var(--ease-out), color 0.3s; }
+  .loop__chapters { grid-row: 3; }
   .loop__chapters { grid-column: 1 / -1; padding-block: 0; gap: 3.5rem; }
   .chapter { opacity: 1; padding-left: 1.25rem; border-left: 2px solid var(--c-line); }
   .chapter.is-active { border-left-color: var(--c-accent); }
@@ -530,10 +565,11 @@ html.motion .wall__media > div { scale: none; }
 .wall__title { font-family: var(--f-display); font-weight: 400; font-size: var(--t-m); letter-spacing: -0.02em; margin-top: 0.4rem; }
 .wall__text { color: var(--c-muted); font-size: var(--t-s); max-width: 40ch; }
 @media (max-width: 767px) {
-  .wall { row-gap: 3rem; }
-  .wall__item--1, .wall__item--2, .wall__item--3, .wall__item--4 { grid-column: 1 / -1; margin-top: 0; }
-  .wall__item--2, .wall__item--4 { margin-left: 18%; }
-  .wall__item--3 { margin-right: 18%; }
+  .wall { display: flex; gap: 0.9rem; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) 1rem; scroll-padding-inline: var(--gutter); scrollbar-width: none; overscroll-behavior-x: contain; }
+  .wall::-webkit-scrollbar { display: none; }
+  .wall__item--1, .wall__item--2, .wall__item--3, .wall__item--4 { flex: 0 0 80%; margin: 0; scroll-snap-align: start; }
+  .wall__item .photo { aspect-ratio: 4 / 5 !important; }
+  .people__head::after { content: 'Swipe for more'; font-size: var(--t-xs); color: var(--c-muted); margin-top: 1rem; }
 }
 
 /* ---------- Pricing ---------- */
