@@ -210,6 +210,10 @@ export default function Home() {
                       {t.stage}
                     </span>
                     <Arrow />
+                    {/* Phones: the example card desktop shows on hover, built into the swipe deck */}
+                    <div className="index__peek" aria-hidden="true">
+                      <Specimen slug={t.slug} />
+                    </div>
                   </Link>
                 </li>
               ))}

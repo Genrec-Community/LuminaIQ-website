@@ -243,7 +243,8 @@ function loopStage() {
 /** Reading with a highlighter: as each tool row crosses the middle of the screen, the lime band marks it. */
 function readingMark() {
   onPage(() => {
-    if (prefersReducedMotion()) return;
+    // Phones show the tools as a swipe deck, where a vertical reading line makes no sense.
+    if (prefersReducedMotion() || matchMedia('(max-width: 767px)').matches) return;
     document.querySelectorAll<HTMLElement>('[data-index] > li').forEach((row) =>
       ScrollTrigger.create({ trigger: row, start: 'top 55%', end: 'bottom 45%', toggleClass: 'is-reading' }),
     );

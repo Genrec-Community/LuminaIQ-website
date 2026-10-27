@@ -138,20 +138,7 @@ p { max-width: 62ch; }
   .finale ul a { font-size: var(--t-xs); }
 }
 
-/* Phone dock: Start free stays one thumb away once the hero is gone. */
-.dock { display: none; }
-@media (max-width: 767px) {
-  .dock {
-    position: fixed; z-index: 40; left: 0.75rem; right: 0.75rem; bottom: calc(0.75rem + env(safe-area-inset-bottom));
-    display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; padding: 0.4rem;
-    border-radius: 999px; background: color-mix(in srgb, var(--c-card) 92%, transparent);
-    box-shadow: 0 18px 40px -16px rgb(22 54 40 / 0.45), inset 0 0 0 1px var(--c-line);
-    translate: 0 calc(100% + 1.5rem); visibility: hidden; transition: translate 0.6s var(--ease-out), visibility 0s 0.6s;
-  }
-  html.dock-on:not(.menu-open) .dock { translate: 0 0; visibility: visible; transition: translate 0.6s var(--ease-out), visibility 0s; }
-  .dock .btn { min-height: 3rem; }
-  html.dock-on .finale { padding-bottom: 6rem; }
-}
+
 
 /* Nav links: a lime band draws under the label; the current page keeps it. */
 .mark {
@@ -469,6 +456,7 @@ html:not(.motion) .chapter { opacity: 1; }
 }
 .preview { position: fixed; left: 0; top: 0; z-index: 30; width: 19rem; translate: 0 -50%; pointer-events: none; opacity: 0; visibility: hidden; scale: 0.9; }
 .preview__card { display: none; }
+.index__peek { display: none; }
 .preview__card.is-on { display: block; }
 @media (max-width: 1023px) {
   .index__row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.5rem; }
@@ -832,4 +820,68 @@ html.motion .step.is-lit { opacity: 1; }
 /* ---------- Reduced motion: complete and calm ---------- */
 @media (prefers-reduced-motion: reduce) {
   .btn::before, .tag::before, .index__band, .mark { transition: none; }
+}
+
+/* ---------- Phones: layered, tactile, closer to the desktop composition ---------- */
+@media (max-width: 767px) {
+  /* Hero: photo with floating cards first, the memory chart overlaps it from below */
+  .hero__media { grid-row: 1; grid-column: 1 / -1; margin: 1.75rem 1rem 0; }
+  .hero__chart { grid-row: 2; grid-column: 1 / -1; margin-top: -5rem; position: relative; z-index: 4; }
+  .floater--a { left: -1.1rem; top: 6%; }
+  .floater--b { right: -1.1rem; top: 34%; }
+  .floater--c { left: -0.6rem; top: 58%; bottom: auto; }
+
+  /* Tools: a swipe deck of cards with their example output */
+  .tools__head::after, .people__head::after { content: 'Swipe for more'; font-size: var(--t-xs); color: var(--c-muted); margin-top: 0.25rem; }
+  .people__head::after { margin-top: 1rem; }
+  .index { display: flex; gap: 0.9rem; overflow-x: auto; scroll-snap-type: x mandatory; border-top: 0; margin-inline: calc(var(--gutter) * -1); padding: 0.5rem var(--gutter) 1.75rem; scroll-padding-inline: var(--gutter); scrollbar-width: none; overscroll-behavior-x: contain; }
+  .index::-webkit-scrollbar { display: none; }
+  .index li, .thread > section:not(.watch) .index li { flex: 0 0 84%; scroll-snap-align: start; border: 0; border-radius: calc(var(--radius) + 0.25rem); background: var(--c-card); box-shadow: var(--shadow); }
+  .index__row { display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; height: 100%; padding: 1.25rem 1.25rem 1.1rem; position: relative; }
+  .index__row .arrow { position: absolute; top: 1.4rem; right: 1.25rem; }
+  .index__name { font-size: 1.75rem; padding-right: 2rem; }
+  .index__band { transform: scaleX(1); opacity: 0.85; }
+  .index__line { font-size: var(--t-s); }
+  .index__peek { display: block; width: 100%; margin-top: auto; padding-top: 0.5rem; }
+  .index__peek .spec { background: var(--c-bg); box-shadow: inset 0 0 0 1px var(--c-line); font-size: var(--t-xs); }
+  .index__peek .spec__q { font-size: 1.05rem; }
+
+  /* Loop chapters become cards that light up as you reach them */
+  .chapter, .thread > section:not(.watch) .chapter { padding: 1.4rem 1.25rem; border: 0; border-radius: calc(var(--radius) + 0.25rem); background: var(--c-card); box-shadow: inset 0 0 0 1px var(--c-line); transition: box-shadow 0.5s var(--ease-out), translate 0.6s var(--ease-out); }
+  .chapter.is-active { box-shadow: inset 0 0 0 2px var(--c-fg), var(--shadow); translate: 0 -4px; }
+  .chapter.is-active .chapter__stage { background: var(--c-accent); color: var(--c-fg); }
+  .chapter__stage { justify-self: start; padding: 0.2rem 0.65rem; border-radius: 99px; background: var(--c-bg); transition: background-color 0.4s; }
+  .loop__chapters { gap: 1.25rem; padding-top: 1.5rem; }
+
+  /* Stats: framed like index cards */
+  .stats__list { gap: 0.75rem; border-top: 0; }
+  .stats__list li, .thread > section:not(.watch) .stats__list li { padding: 1.1rem 1rem 1.2rem; border-radius: var(--radius); background: var(--c-card); box-shadow: inset 0 0 0 1px var(--c-line); }
+  .stats__value { font-size: clamp(2.1rem, 10vw, 2.6rem); }
+
+  /* Chart axis: only the later review days fit at this width */
+  .curve__axis li:first-child { display: none; }
+  .curve__axis .curve__rv { display: none; }
+}
+
+/* Swipe rows deal like cards: the centred one comes forward (where scroll-driven animation exists) */
+@supports (animation-timeline: view()) {
+  @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+    .index li, .wall__item { animation: deal linear both; animation-timeline: view(inline); }
+    @keyframes deal { 0% { scale: 0.9; rotate: 2deg; } 40%, 60% { scale: 1; rotate: 0deg; } 100% { scale: 0.9; rotate: -2deg; } }
+  }
+}
+
+/* Phone dock: Start free stays one thumb away once the hero is gone. */
+.dock { display: none; }
+@media (max-width: 767px) {
+  .dock {
+    position: fixed; z-index: 40; left: 0.75rem; right: 0.75rem; bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; padding: 0.4rem;
+    border-radius: 999px; background: color-mix(in srgb, var(--c-card) 92%, transparent);
+    box-shadow: 0 18px 40px -16px rgb(22 54 40 / 0.45), inset 0 0 0 1px var(--c-line);
+    translate: 0 calc(100% + 1.5rem); visibility: hidden; transition: translate 0.6s var(--ease-out), visibility 0s 0.6s;
+  }
+  html.dock-on:not(.menu-open) .dock { translate: 0 0; visibility: visible; transition: translate 0.6s var(--ease-out), visibility 0s; }
+  .dock .btn { min-height: 3rem; }
+  html.dock-on .finale { padding-bottom: 6rem; }
 }
