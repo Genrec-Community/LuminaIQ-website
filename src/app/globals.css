@@ -358,7 +358,10 @@ html.motion .rise { animation: rise 1.1s var(--ease-out) both; animation-delay: 
 html.motion .thread__svg path { stroke-dashoffset: 1; }
 .thread > section { position: relative; z-index: 1; }
 .thread .node { justify-self: end; flex-direction: row-reverse; }
-.thread > section:not(.watch) :is(h2, .lede, .chapter, .index li, .stats__list li, .stats__note, .wall__item, .price-sec__more, .dial__center) { background: var(--c-bg); }
+.thread > section:not(.watch) :is(h2, .lede, .chapter, .index li, .stats__list li, .stats__note, .wall__item, .price-sec__more) { background: var(--c-bg); }
+.thread .loop__stage::before { content: ''; position: absolute; inset: 12%; border-radius: 50%; background: var(--c-bg); }
+.dial, .dial__labels, .dial__center { z-index: 1; }
+.loop__stage > * { position: absolute; inset: 0; }
 .node { display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem; font-size: var(--t-xs); color: var(--c-muted); }
 .node__dot { width: 1.05rem; height: 1.05rem; border-radius: 50%; background: var(--c-bg); box-shadow: inset 0 0 0 2px var(--c-fg); transition: background-color 0.4s, scale 0.6s var(--ease-out); }
 .node.is-on .node__dot { background: var(--c-accent); scale: 1.25; }

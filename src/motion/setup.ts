@@ -242,7 +242,7 @@ function readingMark() {
   onPage(() => {
     if (prefersReducedMotion()) return;
     document.querySelectorAll<HTMLElement>('[data-index] > li').forEach((row) =>
-      ScrollTrigger.create({ trigger: row, start: 'top 58%', end: 'bottom 42%', toggleClass: 'is-reading' }),
+      ScrollTrigger.create({ trigger: row, start: 'top 55%', end: 'bottom 45%', toggleClass: 'is-reading' }),
     );
   });
 }
